@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useContext } from "react";
+import "./App.css";
+import { CommentContext } from "./Context/Context";
+import { Addcomment } from "./components/Addcomment";
+import { ShowComments } from "./components/ShowComments";
+import { Login } from "./components/Login";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export const App = () => {
+    const { login, setLogin, setUserName } = useContext(CommentContext);
 
-export default App;
+    useEffect(() => {
+        const userLoginData = Boolean(localStorage.getItem("user-login"));
+        const userLoginName = localStorage.getItem("user-name");
+        setLogin(userLoginData);
+        setUserName(userLoginName);
+    }, []);
+
+    return (
+        <div>
+            {!login ? (
+                <Login />
+            ) : (
+                <>
+                    <Addcomment />
+                    <hr align="centre" width="80%" className="divider" />
+                    <ShowComments />
+                </>
+            )}
+        </div>
+    );
+};
